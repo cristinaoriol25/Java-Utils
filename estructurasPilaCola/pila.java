@@ -1,8 +1,10 @@
-public class cola <E>{
+package estructurasPilaCola;
+import Nodo.Nodo;
+public class pila <E> {
     private Nodo <E> tope;
-    private Nodo <E> primero;
+
     private int size;
-    public cola(){
+    public pila(){
         tope = null;
         size = 0;
     }
@@ -14,30 +16,22 @@ public class cola <E>{
     }
     public void push(E elemento){
         Nodo <E> nuevo = new Nodo <E>(elemento);
-        if (isEmpty()){
-            tope = nuevo;
-            primero = nuevo;
-        }else {
-            if(primero.notSiguiente()) {
-                primero.setSiguiente(nuevo);
-            }
-            tope.setSiguiente(nuevo);
-            tope = nuevo;
-        }
+        nuevo.setSiguiente(tope);
+        tope = nuevo;
         size++;
     }
     public E pop(){
         if(isEmpty()){
             return null;
         }
-        E elemento = primero.getElemento();
-        primero = primero.getSiguiente();
+        E elemento = tope.getElemento();
+        tope = tope.getSiguiente();
         size--;
         return elemento;
     }
 
     public void print(){
-        Nodo <E> aux = primero;
+        Nodo <E> aux = tope;
         while(aux != null){
             System.out.println(aux.getElemento());
             aux = aux.getSiguiente();

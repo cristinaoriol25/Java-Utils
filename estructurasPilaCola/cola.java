@@ -1,8 +1,9 @@
 package estructurasPilaCola;
 
 import Nodo.Nodo;
-
+import java.util.concurrent.Semaphore;
 public class cola <E>{
+    private Semaphore mutex = new Semaphore(1);
     private Nodo<E> tope;
     private Nodo <E> primero;
     private int size;
@@ -18,6 +19,7 @@ public class cola <E>{
     }
     public void push(E elemento){
         Nodo <E> nuevo = new Nodo <E>(elemento);
+        mutex.acquireUninterruptibly();
         if (isEmpty()){
             tope = nuevo;
             primero = nuevo;
@@ -29,14 +31,17 @@ public class cola <E>{
             tope = nuevo;
         }
         size++;
+        mutex.release();
     }
     public E pop(){
+        mutex.acquireUninterruptibly();
         if(isEmpty()){
             return null;
         }
         E elemento = primero.getElemento();
         primero = primero.getSiguiente();
         size--;
+        mutex.release();
         return elemento;
     }
 

@@ -1,9 +1,11 @@
 package Matrix;
+import java.util.concurrent.Semaphore;
 
 public class Matrix <E>{ //Clase matriz genérica
     private int filas;
     private int columnas;
     private E [][] matriz;
+    private Semaphore mutex = new Semaphore(1);
     public Matrix(int filas, int columnas){
         this.filas = filas;
         this.columnas = columnas;
@@ -12,7 +14,9 @@ public class Matrix <E>{ //Clase matriz genérica
 
     public void set(int fila, int columna, E elemento){
         if(fila >= 0 && fila < filas && columna >= 0 && columna < columnas){
+            mutex.acquireUninterruptibly();
             matriz[fila][columna] = elemento;
+            mutex.release();
         }else {
             System.out.println("Fuera de rango");
         }
